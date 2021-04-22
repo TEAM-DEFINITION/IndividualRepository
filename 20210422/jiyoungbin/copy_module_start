@@ -1,0 +1,92 @@
+from fastapi import FastAPI,Request,Form
+from fastapi.responses import RedirectResponse, JSONResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+import uvicorn
+import json
+
+'''JSON :  JSON은 속성-값 쌍 또는 "키-값 쌍"으로 이루어진 데이터 오브젝트를 전달하기 위해 
+인간이 읽을 수 있는 텍스트를 사용하는 개방형 표준 포맷이다. 비동기 브라우저/서버 통신을 
+위해, 넓게는 XML을 대체하는 주요 데이터 포맷이다'''
+
+'''uvicorn :  uvloop 및 httptools를 사용하는 초고속 ASGI 서버 구현 입니다.'''
+
+'''CORS : 교차 출처 리소스 공유(Cross-Origin Resource Sharing, CORS)는 추가 HTTP 헤더를 사용하여, 
+한 출처에서 실행 중인 웹 애플리케이션이 다른 출처의 선택한 자원에 접근할 수 있는 권한을 
+부여하도록 브라우저에 알려주는 체제입니다. 웹 애플리케이션은 리소스가 
+자신의 출처(도메인, 프로토콜, 포트)와 다를 때 교차 출처 HTTP 요청을 실행합니다.'''
+
+'''CORSMiddleware : CORS 또는 "교차 출처 리소스 공유" 는 브라우저에서 실행되는 프런트 엔드에 
+백엔드와 통신하는 JavaScript 코드가 있고 백엔드가 프런트 엔드와 다른 "원본"에있는 상황을 나타냅니다. '''
+
+'''Jinja 템플릿 : 단순히 텍스트 파일입니다. Jinja는 모든 텍스트 기반 형식 (HTML, XML, CSV, LaTeX 등)을 
+생성 할 수 있습니다. 신사 템플릿은 특정 확장이 필요하지 않습니다 .html, .xml또는 기타 확장은 괜찮습니다.'''
+
+'''Static files : 웹 사이트는 일반적으로 이미지, JavaScript 또는 CSS와 같은 추가 파일을 제공해야 합니다. Django에서는 
+이러한 파일을 《static files》라고 합니다. Django는 :mod:〉django.contrib.static files’를 제공하여 파일 관리를 도와줍니다.'''
+
+'''pydantic : Python 유형 주석을 사용한 데이터 유효성 검사 및 설정 관리.
+pydantic 은 런타임에 유형 힌트를 적용하고 데이터가 유효하지 않은 경우 사용자 친화적 인 오류를 제공합니다.'''
+
+from module_access import user
+
+# http://10.0.2.2.
+# Fastapi function start 
+app = FastAPI()
+
+# CORS Setting 
+origins = [
+    "*",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+#static management
+#app.mount("/static", StaticFiles(directory='static'), name ='static')
+#templates = Jinja2Templates(directory)
+
+# Access API managment  : 서비스 api  매니지먼트 
+# Signup API 회원가입
+
+# .POST : 경로 매개 변수를 통해 들어가지 않고 request body를 통해 들어가 정보를 보호함
+# .GET : 경로 매개 변수를  URL을 통해 전달해서 접속 정보를 설정?
+
+@app.post("/app/signup") 
+async def app_post(request:Request, user_id:str=Form(...),Client_random:str=Form(...)): 
+#비동기  app_post함수를 통해 유저의 요청 정보를 가지고 매개 변수로 받아옴 클라이언트 마다 랜덤 string값을 부여 
+
+    result = user().genesis_block_create(user_id,user_pwd,Client_random) 
+    #유저의 아이디 비밀번호 클라이언트 랜덤 값으 가지고 제네시스 블록을 생성함수를 실행  
+    return result
+
+# Login API 로그인 
+@app.post("/app/login") 
+async def app_login(request:Request, user_id:str=Form(...),user_pwd:str=Form(...)):
+#비동기 app_login함수를 통해 요청 정보를 가지고 매개변수로 받아옴
+
+    result = user().login(user_id,user_pwd)
+    #유저 아이디와 비밀번호를 가지고 로그인 함수를 실행
+    return result
+
+# Post Access API
+@app.post("/app/post")
+async def app_post(request:Request, user_id:str=Form(...),user_pwd:str=Form(...),postcode:str=Form(...)):
+#비동기 app_post함수를 통해 요청 정보와 포스트코드르 매개변수로 받아옴 
+ 
+    result = user().next_block_create(user_id, user_pwd, postcode)
+    #유저의 정보와 포스트 코드를 가지고 다음 블록을 생성하는 함수를 실행 
+    return result
+
+#########################################################################
+
+#자동 시작 
+if __name__== "__main__": 
+    uvicorn.run("module_start:app",host="0.0.0.0",port=55555,reload=True)
