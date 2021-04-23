@@ -37,9 +37,9 @@ class user :
         temp = f.readlines()
         # 파일닫음
         f.close()
-        # temp[1]안에있는 데이터에 단어별로 | 을 사용해 문자열을 나누어 출력. =(a|b|c)
+        # temp[1] 에있는 데이터에 | 을 제거후 [0]출력=id =(a|b|c)
         print( temp[1].split("|")[0])
-        # temp[1][1] 값과 사용자가 입력한 pwd값을 비교
+        # temp[1] 의 | 제거 후 temp[1] 값과 사용자가 입력한 pwd값을 비교
         if temp[1].split("|")[1] == user_pwd :
             return 200 # ok
         else :
@@ -117,5 +117,5 @@ class user :
 
         # 보낼 데이터를 n-1번째 체인의 해시값으로 암호화
         result = module_endecrypt.FerCipher(prev_block[-2].split("|")[3]).encrypt(server_block)
-        # new_block '|' 제거 후 [][3] 값을 서버블록으로 암호화
+        # new_block '|' 제거 후 result[3](= new_block)값을 서버블록으로 암호화
         return result
