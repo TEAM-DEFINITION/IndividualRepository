@@ -54,7 +54,7 @@ class user :
             return 401 # 요청실패
         
         # 데이터를 해당 형식으로 genesis_block 변수에 저장
-        # user_id | user_pwd | clientrandom | 앞의 값(user_id | user_pwd | clientrandom |)을 인코딩후 해시암호화한 값 |
+        # user_id| user_pwd| clientrandom| 앞의 값(user_id| user_pwd| clientrandom|)을 인코딩후 해시암호화한 값|
         genesis_block = user_id + "|" + user_pwd +  "|" + clientrandom +"|"
         genesis_block = genesis_block + hashlib.sha512(genesis_block.encode('utf-8')).hexdigest() +"|"
 
@@ -75,7 +75,7 @@ class user :
         f.close()
 
         # 이전 블록의 해시값을 사용자 블록에 쓰기
-        # prev_block = ['user_id|', '|user_pw|', '|genesis|', '현재좌표']
+        # prev_block = ['user_id|', 'user_pw|', 'genesis|', '현재좌표']
         # prev_block[-1] = 마지막 블록에 저장한 해시 값을 prev_data변수에 저장
         prev_data = prev_block[-1]
         # module_endecryp.py의 FerCiper 클래스를 이용해 prevdata변수를 split을 이용해 | 를 제거하고 [3]블록인 '이전 블록을 해시암호화한값' 을 postnum코드값을 이용해 복호화한다.
@@ -87,7 +87,7 @@ class user :
         f = open("db_user\\" + user_id + "_db","a", encoding="UTF8")
         # 개행후 new_block을 파일에 저장한다.
         f.write("\n" + new_block)
-        # user_id | user_pw | genesis | new_block |
+        # user_id| user_pw| genesis| new_block|
         f.close()
 
         # 서버 블록 포맷
@@ -95,23 +95,23 @@ class user :
 
         # 새로운 블록을 쓰기 위해 수정된 체인 읽기
         f = open("db_user\\" + user_id + "_db","r", encoding="UTF8")
-        # prev_block = ['user_id|', '|user_pw|', '|genesis|', '|new_block|']
+        # prev_block = ['user_id|', 'user_pw|', 'genesis|', 'new_block|']
         prev_block = f.readlines()
         f.close()
 
         # 사용자 블록 해시값을 추출하여 추가
-        # prev_block = ['user_id', 'user_pw', 'genesis', 'new_block', 현재좌표]
+        # prev_block = ['user_id|', 'user_pw|', 'genesis|', 'new_block|', 현재좌표]
         prev_data = prev_block[-1] # new_block 저장
         # server_block = 'server_block + hash(prev_data)' | 
         server_block = server_block + hashlib.sha512(prev_data.encode('utf-8')).hexdigest() + "|"
         f = open("db_user\\" + user_id + "_db","a", encoding="UTF8")
         f.write("\n" + server_block)
-        # user_id | user_pw | genesis | new_block | server_block |
+        # user_id| user_pw| genesis| new_block| server_block|
         f.close()
 
         # 최종 체인의 정보를 읽어옴
         f = open("db_user\\" + user_id + "_db","r", encoding="UTF8")
-        # prev_block = ['user_id|', '|user_pw|', '|genesis|', '|new_block|', '|server_block|']
+        # prev_block = ['user_id|', 'user_pw|', 'genesis|', 'new_block|', 'server_block|']
         prev_block = f.readlines()
         f.close()
 
