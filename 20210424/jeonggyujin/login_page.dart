@@ -18,11 +18,14 @@ class _LoginPageState extends State<LoginPage> {
   List data = [];
   bool isLoading = false; // default 비활성화
 
-  _fetchid() async { //?
+  _fetchid() async {
     setState(() {
       isLoading = true; //활성화
     });
-    // 웹서버 /app/login에 포스트메세지를 보내는데, 바디부분에 id와 pw를 보내고 수신되는 http코드를 response변수에 저장한다.
+    // 웹서버 /app/login에 포스트메세지를 보낸다.
+    // 헤더: 'Content-Type': 'application/x-www-form-urlencoded',
+    // 바디: id, pw
+    // 수신: 헤더값, response변수이용
     final response = await http.post(
       Uri.parse("http://112.156.0.196:55555/app/login"),
       headers: <String, String> {
