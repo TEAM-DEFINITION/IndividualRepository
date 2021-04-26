@@ -19,4 +19,23 @@
 
 ## 비대칭키 생성 (RSA)
 
+### rsa_encrypt 1.0.5 (https://pub.dev/packages/rsa_encrypt)
+
 - 키 생성 관련 api 사용법 확인 중
+
+```
+import 'package:rsa_encrypt/rsa_encrypt.dart';
+import 'package:pointycastle/api.dart' as crypto;
+
+//Future to hold our KeyPair
+Future<crypto.AsymmetricKeyPair> futureKeyPair;
+
+//to store the KeyPair once we get data from our future
+crypto.AsymmetricKeyPair keyPair;
+
+Future<crypto.AsymmetricKeyPair<crypto.PublicKey, crypto.PrivateKey>> getKeyPair()
+{
+var helper = RsaKeyHelper();
+return helper.computeRSAKeyPair(helper.getSecureRandom());
+}
+```
