@@ -11,23 +11,23 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
 
-  final TextEditingController _idcontroller = TextEditingController();
-  final TextEditingController _pwdcontroller = TextEditingController();
-  final TextEditingController _pwdcheckcontroller = TextEditingController();
-  final TextEditingController _phonecontroller = TextEditingController();
+  final TextEditingController _idcontroller = TextEditingController(); // id입력폼
+  final TextEditingController _pwdcontroller = TextEditingController(); // pw 입력폼
+  final TextEditingController _pwdcheckcontroller = TextEditingController(); // pwd 확인
+  final TextEditingController _phonecontroller = TextEditingController(); 
   bool isLoading = false;
 
   _fetchSignUp() async {
 
     
-
+    // 입력된 패스워드와 체크패스워드가 일치하면 isLoading 활성화
     if (_pwdcontroller.text == _pwdcheckcontroller.text) {
         setState(() {
         isLoading = true;
       });
 
-      final clientrandom = random();
-
+      final clientrandom = random(); //클라이언트에서 생성하는 랜덤 값
+      // 서버 /app/signup 경로로 post메세지를 보냄. id, pw, clientrandom값(문자열로 치환)
       final response = await http.post(
         Uri.parse("http://112.156.0.196:55555/app/signup"),
         headers: <String, String> {
@@ -40,14 +40,14 @@ class _SignUpState extends State<SignUp> {
         }
         ,
       );
-
+      // OK
       if(response.statusCode == 200){
-
+        // 401 id 불일치
         if (response.body == "401") {
 
           _showDialogIdFail();
 
-        } else {
+        } else { // 제네시스 블록생성
 
           setState(() {
           file.genesisWrite(_idcontroller.text, _pwdcontroller.text, clientrandom.toString());
