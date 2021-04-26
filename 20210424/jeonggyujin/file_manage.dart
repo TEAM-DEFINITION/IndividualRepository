@@ -75,11 +75,11 @@ Future nextblockWrite_client(id, pwd, postcode) async {
 }
 
 // 서버에 전달할 블록 생성
-Future nextblockWrite_server(id, decrypted) async {
+Future nextblockWrite_server(id, decrypted) async { //id, postcode
 
   final dir = await getApplicationDocumentsDirectory();
   final prev = await File(dir.path + '/' + id + '.txt').readAsLines();
-  File(dir.path + '/' + id + '.txt').writeAsString(await File(dir.path + '/' + id + '.txt').readAsString() + "\n" + decrypted); // 개행 후 decrypted 저장
+  File(dir.path + '/' + id + '.txt').writeAsString(await File(dir.path + '/' + id + '.txt').readAsString() + "\n" + decrypted); // 개행 후 postcode 저장
 
   // 정상적으로 데이터가 들어갔는지 확인
   final test = await File(dir.path + '/' + id + '.txt').readAsLines();
