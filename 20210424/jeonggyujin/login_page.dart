@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     // 웹서버 /app/login에 포스트메세지를 보낸다.
     // 헤더: 'Content-Type': 'application/x-www-form-urlencoded',
     // 바디: id, pw
-    // 수신: 헤더값, response변수이용
+    // 수신: response변수이용
     final response = await http.post(
       Uri.parse("http://112.156.0.196:55555/app/login"),
       headers: <String, String> {
@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
     // 상태코드 200일때
     if(response.statusCode == 200){
       isLoading = false; // 
-      // 상태코드 200 을 받으면 로그인성공 호출
+      // 응답 200 을 받으면 로그인성공 호출
       if (response.body == "200") {
         // 네비게이터 = 화면이동
         Navigator.push(context, MaterialPageRoute(builder: (context) =>
@@ -49,13 +49,13 @@ class _LoginPageState extends State<LoginPage> {
                 userid: _controller.text, 
                 userPwd: _controller2.text,
         )));
-      // 서버로부터 401을 받음
+      // 서버로부터 401을 응답 받음
       } else if (response.body == "401") {
 
         _showDialogLoginIdFail();
         _controller.text = ""; // 입력한 id를 초기화. 없애주는 것
         _controller2.text = ""; // 입력한 pw를 없애주는 것
-      // 서버로부터 402를 받음
+      // 서버로부터 402를 응답 받음
       } else if (response.body == "402") {
 
         _showDialogLoginPwdFail();
