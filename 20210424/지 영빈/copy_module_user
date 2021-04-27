@@ -1,0 +1,85 @@
+import hashlib #해시함수 라이브러리 
+import module_endecrypt #모듈 암복호화
+import ast 
+import time 
+import os 
+
+'''ast : 파이썬 응용 프로그램이 파이썬 추상 구문 문법의 트리를 처리하는 데 도움을 줍니다. 
+추상 구문 자체는 각 파이썬 릴리스마다 바뀔 수 있습니다; 이 모듈은 프로그래밍 방식으로 
+현재 문법의 모양을 찾는 데 도움이 됩니다.'''
+
+'''os : 모듈은 운영 체제 종속 기능을 사용하는 이식성 있는 방법을 제공합니다. 파일을 읽거나 쓰고 싶으면 
+open()을 보세요, 경로를 조작하려면 os.path 모듈을 보시고, 명령 줄에서 주어진 모든 파일의 
+모든 줄을 읽으려면 fileinput 모듈을 보십시오. 임시 파일과 디렉터리를 만들려면 tempfile 모듈을 보시고, 
+고수준의 파일과 디렉터리 처리는 shutil 모듈을 보십시오.'''
+
+'''
+FileName : {{user_id}}_db 
+
+[Variable]
+USER_ID:str
+USER_PASSWORD:str 
+DATA:star 
+PREV_HASH:str 
+
+'''
+
+class user : #유저 클래스 
+    def __init__(self): #생성자 
+        pass 
+
+    def login(self,user_pwd): #로그인 함수 
+
+        if os.path.isfile("./db_user/" + user_id  + "_db")==False: #존재하는 유저인지 확인하는 조건 
+            return 401 
+
+        f = open("db_user\\"+user_id+"_db","r",encoding="UTF8") #존재하는 유저라면 유저아이디에 해당하는 
+        temp = f.readlines()
+        f.close()
+        print(temp[1].split('|')[0]) #파이프라인으로 각 데이터를 구분 
+        
+        if temp[1].split("|")[1] == user_pwd:#비밀번호가 일치 하다면 
+            return 200 #로그인 완료 
+        else: 
+            return 402 #로그인 실패 
+    
+    def genesis_block_create(self, user_id, user_pwd,clienstrandom):#제네시스 블록 생성 함수 
+
+        #중복확인 
+        if os.path.isfile("./db_user/" + user_id + "_db"):
+            return 401
+        
+        genesis_block = user_id + "|" + user_pwd + "|" + clienstrandom + "|" #제네시스 블록 구성 유저 아이디 비밀번호 클라이언트 랜덤 문자열
+        genesis_block = genesis_block + hashlib.sha512(genesis_block.encode('utf-8')).hexdigest() + "|" 
+        #원래 있던 제네시스 블록의 데이터를 UTF8로 인코딩후 sha512로 해시 값으로 바꾸고 
+
+        f = open("db_user\\" + user_id + "_db","w",encoding="UTF8")
+        f.write("\n" + genesis_block)#db_user파일 안에 유저의 제네시스 블록을 작성함 
+        f.colse()
+
+        return 200 #정상작동 
+
+    
+    def next_block_create(self, user_id, user_pwd, data): #다음에 블록 만들기 
+
+        #이전 블록 읽어오기 
+        f = open("db_user\\" + user_id + "_db","r",encdoing="UTF8")
+        prev_block = f.readlines() 
+        f.close()
+
+        #이전 블록의 해시값을 사용자 블록에 쓰기 
+        prev_data = prev_block[-1] #해시 데이터 = 마지막 블록 
+        result, place, time = module_endecrypt.FerCipher(prev_data.split("|")[3]).decrypt(data)#디코딩한 데이터에서 파이프라인 을 기준으로 데이터를 나눔 
+        f = open("db_user\\" + user_id + "_db" ,"a", encdoing="UTF8")
+        f.write("\n" + server_block)
+        f.close()
+
+        #최종 체인의 정보를 읽어옴 
+        f = open("db_user\\" + user_id "_db","r", encdoing="UTF8")
+        prev_block = f.readlines()
+        f.close()
+
+        #보낼 데이터를 n-1번째 체인의 해시값으로 암호화 
+        result = module_endecrypt.FerCipher(prev_block[-2].split("|")[3]).encrypt(server_block)
+        return result
+
