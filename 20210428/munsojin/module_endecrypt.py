@@ -42,7 +42,7 @@ class FERCIPHER:
         print("유저로부터 받은 데이터 : " + str(plainText))
 
         # 주소확인 테스팅 시작!!
-        print("사용자가 방문할 장소 : " + modulePostcode.check(plainText.decode('utf-8').split("|")[2]))
+        print("사용자가 방문할 장소 : " + modulePostCode.check(plainText.decode('utf-8').split("|")[2]))
 
-        return plainText.decode('utf-8'), modulePostcode.check(plainText.decode('utf-8').split("|")[2]), str(datetime.datetime.now())
+        return plainText.decode('utf-8'), modulePostCode.check(plainText.decode('utf-8').split("|")[2]), str(datetime.datetime.now())
 
