@@ -5,10 +5,10 @@
 - FerCipher -> FERCIPHER
 
 
-## encrpyt : VAR
+## encrypt : VAR
 - cipher_suite -> cipherSuite
 - cipher_text -> cipherText
 
-## decrpyt : VAR
+## decrypt : VAR
 - cipher_suite -> cipherSuite
 - plain_text -> plainText
