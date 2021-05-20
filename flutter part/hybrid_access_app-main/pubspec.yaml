@@ -1,5 +1,5 @@
-name: ksjr_testing
-description: A new Flutter application.
+name: hybrid_access_app
+description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -23,18 +23,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^0.13.1
+  encrypt: ^5.0.0
+  path_provider:
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flutter_secure_storage: ^4.1.0
-  rsa_encrypt: ^1.0.5
-  encrypt: ^4.1.0
-  path_provider: ^2.0.1
-  fast_rsa: ^1.2.0-rc1
-  secure_random: ^1.0.1
-#  rsa_util: ^0.1.1
+  flutter_secure_storage: ^4.2.0
+  rsa_encrypt: ^2.0.0
+  fast_rsa: ^1.3.6
+  material: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:
@@ -45,7 +45,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
+  assets:
+    - assets/receiver.pem
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

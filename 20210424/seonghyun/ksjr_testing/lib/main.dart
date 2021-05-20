@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
+import 'package:fast_rsa/rsa.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'package:pointycastle/api.dart' as crypto;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -34,6 +35,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   Future<crypto.AsymmetricKeyPair<crypto.PublicKey, crypto.PrivateKey>> getKeyPair()
   {
     var helper = RsaKeyHelper();
+    print(helper.encodePrivateKeyToPemPKCS1(keyPair.privateKey));
     return helper.computeRSAKeyPair(helper.getSecureRandom());
   }
 
@@ -64,12 +66,27 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   }
 
   void _addNewItem() async {
-    getKeyPair();
+    // var helper = RsaKeyHelper();
+    // keyPair = helper.getSecureRandom() as crypto.AsymmetricKeyPair<crypto.PublicKey, crypto.PrivateKey>;
+    // print(keyPair);
+    // print(1);
+    // var rng = new Random();
+    // String k = '1';
+    // for (var i = 1; i < 10; i++) {
+    //   k += rng.nextInt(10).toString();
+    // }
+    var res = await RSA.generate(1024);
+    print(getApplicationDocumentsDirectory().toString());
+    List<String> result = res.toString().split("-----");
+    print(result);
+    print('private');
+    print(result[2]);
+    print('public');
+    print(result[6]);
+    // getKeyPair();
 
     final String key = 'key';
-    final String value = futureKeyPair.toString();
-    print(value);
-
+    final String value = 'value';
     await _storage.write(
       key: key,
       value: value,
