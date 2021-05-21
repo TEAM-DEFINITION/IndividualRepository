@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'file_manage.dart' as file;
 
-List<String> entries=['null'];
+List<String> entries=['null'];	// 리스트가 null 일 경우 널포인터에러가 발생하여 "null" 문자열을 넣어둠
 
 class Search extends StatefulWidget {
   @override
@@ -10,6 +10,8 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+
+  // 리스트뷰를 새로고침하는 기능을 위해 RefreshIndicator 를 사용
   var refreshKey = GlobalKey<RefreshIndicatorState>();
 
   Future<Null> refreshList() async {
@@ -21,9 +23,11 @@ class _SearchState extends State<Search> {
     return null;
   }
 
+  // file_manage.dart에 생성해둔 fetch메소드 실행하여 return된 리스트 저장
   _fetch() async{
     entries = await file.fetch();
   }
+
   @override
   Widget build(BuildContext context) {
     _fetch();

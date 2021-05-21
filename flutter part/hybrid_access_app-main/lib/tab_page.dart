@@ -27,7 +27,7 @@ class _TabPageState extends State<TabPage> {
         userPwd : widget.userPwd),
     Search(),
     Account.init(
-      userid : widget.userid,
+      userid : widget.userid,	// 프로필에 사용될 userid 전달
     ),
   ];
   @override
