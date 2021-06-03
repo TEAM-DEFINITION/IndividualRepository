@@ -1,6 +1,27 @@
-## Flutter Part
+## Flutter Part (updated 2021.06.03)
 
 - 박성현 / 박민수 / 김주원 / 이선호 / 정규진
+
+### 1. 비동기 처리
+
+- FutureBuilder 사용 -> 비동기 처리
+  	- Search tap
+  	- Account tap
+
+### 2. file_manage.dart
+
+- 사용자 프로필에 사용될 문자열 추출용 함수 추가
+  - chkIdx	-> 방문 x : 0 return
+  - chkPlace -> 방문 x : 방문이 필요합니다 문자열 출력
+- secure_storage에 사용되는 모든 키 값에 사용자의 id를 붙여 사용
+  - userid : psh 일 때, key : psh0 ~ pshN
+  - 사용자별 storage 구분에 필요
+
+### 3. login_page.dart
+
+- id / pw 정규식 적용
+
+---------------------------------
 
 ### 1. home.dart
 
