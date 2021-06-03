@@ -14,7 +14,7 @@
   - chkIdx	-> 방문 x : 0 return
   - chkPlace -> 방문 x : 방문이 필요합니다 문자열 출력
 - secure_storage에 사용되는 모든 키 값에 사용자의 id를 붙여 사용
-  - userid : psh 일 때, key : psh0 ~ pshN
+  - userid : psh 일 때, key : psh_0 ~ psh_N
   - 사용자별 storage 구분에 필요
 
 ### 3. login_page.dart
